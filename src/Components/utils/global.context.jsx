@@ -1,15 +1,24 @@
-import { createContext } from "react";
+import  { createContext, useState } from 'react';
+import PropTypes from 'prop-types';
 
-export const initialState = {theme: "", data: []}
 
-export const ContextGlobal = createContext(undefined);
+export const ThemeContext = createContext();
 
-export const ContextProvider = ({ children }) => {
-  //Aqui deberan implementar la logica propia del Context, utilizando el hook useMemo
+export const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState('light'); 
+
+  const toggleTheme = () => {
+    setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
+  };
 
   return (
-    <ContextGlobal.Provider value={{}}>
+    <ThemeContext.Provider value={{ state: { theme }, toggleTheme }}>
       {children}
-    </ContextGlobal.Provider>
+    </ThemeContext.Provider>
   );
+};
+
+// Validación de los props
+ThemeProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };

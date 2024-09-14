@@ -1,16 +1,24 @@
-import React from 'react'
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-//Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
 
-const Navbar = () => {
-
+const Navbar = ({ toggleTheme, theme }) => {
   return (
-    <nav>
-      {/* Aqui deberan agregar los liks correspondientes a las rutas definidas */}
-      {/* Deberan implementar ademas la logica para cambiar de Theme con el button */}
-      <button>Change theme</button>
+    <nav className='nav'>
+        <img src="/public/DH.ico" alt='DH'/>
+        <Link to="/">Home</Link>
+        <Link to="/contact">Contact</Link>
+        <Link to="/favs">Favs</Link>
+        <button className="button" onClick={toggleTheme}>
+            {theme === 'Día' ? 'Noche' : '🌙'}
+        </button>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+Navbar.propTypes = {
+  toggleTheme: PropTypes.func.isRequired,
+  theme: PropTypes.string.isRequired,
+};
+
+export default Navbar;

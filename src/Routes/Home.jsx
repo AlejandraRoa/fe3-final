@@ -1,17 +1,33 @@
-import React from 'react'
-import Card from '../Components/Card'
-
-//Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Card from '../Components/Card';
 
 const Home = () => {
-  return (
-    <main className="" >
-      <h1>Home</h1>
-      <div className='card-grid'>
-        {/* Aqui deberias renderizar las cards */}
-      </div>
-    </main>
-  )
-}
+  const [dentists, setDentists] = useState([]);
 
-export default Home
+  useEffect(() => {
+    axios.get('https://jsonplaceholder.typicode.com/users')
+      .then(response => setDentists(response.data))
+      .catch(error => console.log(error));
+  }, []);
+
+  const addToFav = (dentist) => {
+    const favs = JSON.parse(localStorage.getItem('favs')) || [];
+    if (!favs.some(fav => fav.id === dentist.id)) {
+      favs.push(dentist);
+      localStorage.setItem('favs', JSON.stringify(favs));
+    }
+  };
+
+  return (
+    
+    <div className="card-grid">
+            
+      {dentists.map(dentist => (
+        <Card key={dentist.id} dentist={dentist} addToFav={addToFav} />
+      ))}
+    </div>
+  );
+};
+
+export default Home;
